@@ -1,7 +1,7 @@
 #include "block.h"
-#include "cstring"
+#include <cstring>
 
-Block::Block() {
+Block::Block(const std::list<Structure*> &s) : Structure(s) {
     for (int i; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = false;
 }
@@ -21,4 +21,32 @@ bool Block::collides(const Structure& other) const {
             if (occupied_at(x, y) && other.occupied_at(x, y))
                 return true;
     return false;
+}
+
+bool Block::check_collides() const {
+    for (std::list<Structure*>::const_iterator i = structures.begin();
+            i != structures.end(); ++i)
+        if (collides(**i))
+            return true;
+    return false;
+}
+void Block::move_left() {
+    --_x;
+    if (check_collides())
+        ++_x;
+}
+void Block::move_right() {
+    ++_x;
+    if (check_collides())
+        --_x;
+}
+void Block::move_up() {
+    --_y;
+    if (check_collides())
+        ++_y;
+}
+void Block::move_down() {
+    ++_y;
+    if (check_collides())
+        --_y;
 }

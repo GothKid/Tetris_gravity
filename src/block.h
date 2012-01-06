@@ -5,10 +5,37 @@ const int SHAPE_SIDE = 4;
 
 class Block : Structure {
     public:
-        Block();
-        bool collides(const Structure&) const;
-        bool occupied_at(int x, int y) const;
+        /**
+         * @brief Construct a block
+         * @param Reference to a list that contains all structures
+         */
+        Block(const std::list<Structure*> &);
+        void move_left();
+        void move_right();
+        void move_up();
+        void move_down();
     private:
+        /**
+         * @brief Check if a structure collides with this block
+         * @param Reference to the other structure
+         */
+        bool collides(const Structure&) const;
+        /**
+         * @brief Check if this block occupies the given coordinates
+         * @param X coordinate
+         * @param Y coordinate
+         * @return true if there is a collision, false otherwise
+         */
+        bool occupied_at(int x, int y) const;
+        /**
+         * @brief Check if this block collides with any of the other
+         * structures
+         * @return true if there is a collision, false otherwise
+         */
+        bool check_collides() const;
+        /**
+         * @brief Stores if a cell is occupied by this block
+         */
         bool shape[SHAPE_SIDE*SHAPE_SIDE];
         int _x;
         int _y;
