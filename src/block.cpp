@@ -1,9 +1,9 @@
 #include "block.h"
-#include <cstring>
 
 Block::Block(const std::list<Structure*> &s) : Structure(s) {
     for (int i; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = false;
+    _rotation = 0;
 }
 
 bool Block::occupied_at(int x, int y) const {
@@ -16,8 +16,8 @@ bool Block::occupied_at(int x, int y) const {
 
 
 bool Block::collides(const Structure& other) const {
-    for (int x = _y; x < SHAPE_SIDE; ++x)
-        for (int y = _x; y < SHAPE_SIDE; ++y)
+    for (int x = _x; x < _x + SHAPE_SIDE; ++x)
+        for (int y = _y; y < _y + SHAPE_SIDE; ++y)
             if (occupied_at(x, y) && other.occupied_at(x, y))
                 return true;
     return false;
@@ -26,7 +26,7 @@ bool Block::collides(const Structure& other) const {
 bool Block::check_collides() const {
     for (std::list<Structure*>::const_iterator i = structures.begin();
             i != structures.end(); ++i)
-        if (collides(**i))
+        if (*i != this && collides(**i))
             return true;
     return false;
 }

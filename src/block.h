@@ -3,7 +3,7 @@
 #include "structure.h"
 const int SHAPE_SIDE = 4;
 
-class Block : Structure {
+class Block : public Structure {
     public:
         /**
          * @brief Construct a block
@@ -14,7 +14,8 @@ class Block : Structure {
         void move_right();
         void move_up();
         void move_down();
-    private:
+        void rotate();
+    protected:
         /**
          * @brief Check if a structure collides with this block
          * @param Reference to the other structure
@@ -39,6 +40,13 @@ class Block : Structure {
         bool shape[SHAPE_SIDE*SHAPE_SIDE];
         int _x;
         int _y;
+        int _rotation;
+};
+
+class Line_block : public Block {
+    public:
+        Line_block(const std::list<Structure*> &);
+        void rotate();
 };
 
 #endif
