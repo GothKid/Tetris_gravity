@@ -16,6 +16,8 @@ bool Block::occupied_at(int x, int y) const {
 
 
 bool Block::collides(const Structure& other) const {
+    //For every cell occupied by the block, check if the other structucture
+    //also occupies it
     for (int x = _x; x < _x + SHAPE_SIDE; ++x)
         for (int y = _y; y < _y + SHAPE_SIDE; ++y)
             if (occupied_at(x, y) && other.occupied_at(x, y))
@@ -49,4 +51,10 @@ void Block::move_down() {
     ++_y;
     if (check_collides())
         --_y;
+}
+
+void Block::rotate() {
+    _rotation = (_rotation + 1) % 4;
+    for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
+        shape[i] = get_rotation_data()[_rotation];
 }

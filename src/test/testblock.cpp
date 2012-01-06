@@ -6,8 +6,11 @@ class Block_test : public Block {
         Block_test(int , int);
         int x() {return _x;}
         int y() {return _y;}
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
 };
 
+const bool (*Block_test::get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] {}
 Block_test::Block_test(int x, int y) : Block() {
     _x = x;
     _y = y;

@@ -41,12 +41,15 @@ class Block : public Structure {
         int _x;
         int _y;
         int _rotation;
+        virtual const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] = 0;
 };
 
 class Line_block : public Block {
     public:
         Line_block();
-        void rotate();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
 };
 
 #endif
