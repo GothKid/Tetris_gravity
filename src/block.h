@@ -1,18 +1,17 @@
 #ifndef BLOCK_H
 #define BLOCK_H
+#include "structure.h"
 const int SHAPE_SIDE = 4;
 
-typedef enum {Left, Right, Down} Collision
-
-class Block {
-public:
-    Block();
-    Collision collides(const &block);
-private:
-    bool shape[SHAPE_SIDE*SHAPE_SIDE];
-protected:
-    int _x;
-    int _y;
-}
+class Block : Structure {
+    public:
+        Block();
+        bool collides(const Structure&) const;
+        bool occupied_at(int x, int y) const;
+    private:
+        bool shape[SHAPE_SIDE*SHAPE_SIDE];
+        int _x;
+        int _y;
+};
 
 #endif
