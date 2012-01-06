@@ -21,7 +21,7 @@ const bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE] = {
         1, 1, 1, 1,
         0, 0, 0, 0,
         0, 0, 0, 0}};
-Line_block::Line_block(const std::list<Structure*> &s) : Block(s) {
+Line_block::Line_block() : Block() {
     memcpy(shape, _rotation_data[_rotation], SHAPE_SIDE*SHAPE_SIDE);
 }
 

@@ -1,3 +1,6 @@
 #include "structure.h"
-Structure::Structure(const std::list<Structure*> &s) : structures(s) {
+
+std::list<Structure*> Structure::structures;
+Structure::Structure() {
+    structures.push_back(this);
 }

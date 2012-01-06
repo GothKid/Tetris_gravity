@@ -9,7 +9,7 @@ class Block : public Structure {
          * @brief Construct a block
          * @param Reference to a list that contains all structures
          */
-        Block(const std::list<Structure*> &);
+        Block();
         void move_left();
         void move_right();
         void move_up();
@@ -45,7 +45,7 @@ class Block : public Structure {
 
 class Line_block : public Block {
     public:
-        Line_block(const std::list<Structure*> &);
+        Line_block();
         void rotate();
 };
 

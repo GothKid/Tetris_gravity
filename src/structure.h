@@ -3,9 +3,9 @@
 #include <list>
 class Structure {
     public:
-        Structure(const std::list<Structure*> &s);
+        Structure();
         virtual bool occupied_at(int x, int y) const = 0;
     protected:
-        const std::list<Structure*> &structures;
+        static std::list<Structure*> structures;
 };
 #endif

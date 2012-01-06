@@ -1,6 +1,6 @@
 #include "block.h"
 
-Block::Block(const std::list<Structure*> &s) : Structure(s) {
+Block::Block() : Structure() {
     for (int i; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = false;
     _rotation = 0;
