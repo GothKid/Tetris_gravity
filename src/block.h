@@ -51,5 +51,47 @@ class Line_block : public Block {
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
 };
+class L_block : public Block {
+    public:
+        L_block();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+};
+class Reverse_L_block : public Block {
+    public:
+        Reverse_L_block();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+};
+class Box_block : public Block {
+    public:
+        Box_block();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+};
+class S_block : public Block {
+    public:
+        S_block();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+};
+class Reverse_S_block : public Block {
+    public:
+        Reverse_S_block();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+};
+class T_block : public Block {
+    public:
+        T_block();
+    private:
+        const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
+        const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+};
 
 #endif
