@@ -24,12 +24,9 @@ class Block : public Structure {
          * @return true or false
          */
         bool is_possibly_occupied(int, int) const;
-    protected:
-        /**
-         * @brief Check if a structure collides with this block
-         * @param Reference to the other structure
-         */
-        bool collides(const Structure&) const;
+        bool is_moving();
+        void delete_row(int row);
+        void draw() const;
         /**
          * @brief Check if this block occupies the given coordinates
          * @param X coordinate
@@ -37,6 +34,13 @@ class Block : public Structure {
          * @return true if there is a collision, false otherwise
          */
         bool occupied_at(int x, int y) const;
+        bool empty() const;
+    protected:
+        /**
+         * @brief Check if a structure collides with this block
+         * @param Reference to the other structure
+         */
+        bool collides(const Structure&) const;
         /**
          * @brief Check if this block collides with any of the other
          * structures
@@ -47,10 +51,9 @@ class Block : public Structure {
          * @brief Stores if a cell is occupied by this block
          */
         bool shape[SHAPE_SIDE*SHAPE_SIDE];
-        int _x;
-        int _y;
         int _rotation;
         virtual const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] = 0;
+        bool _is_moving;
 };
 
 class Line_block : public Block {

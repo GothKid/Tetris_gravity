@@ -4,6 +4,7 @@ Block::Block() : Structure() {
     for (int i; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = false;
     _rotation = 0;
+    _is_moving = true;
 }
 
 bool Block::occupied_at(int x, int y) const {
@@ -48,8 +49,10 @@ void Block::move_up() {
 }
 void Block::move_down() {
     ++_y;
-    if (check_collides())
+    if (check_collides()) {
+        _is_moving = false;
         --_y;
+    }
 }
 
 void Block::rotate() {
@@ -61,4 +64,31 @@ void Block::rotate() {
 bool Block::is_possibly_occupied(int x, int y) const {
     return x >= _x && x < _x + SHAPE_SIDE &&
         y >= _y && y < _y + SHAPE_SIDE;
+}
+
+bool Block::is_moving() {
+    return _is_moving;
+}
+
+void Block::delete_row(int row) {
+    //Check if the block is in the row
+    if (row >= _y && row < _y + SHAPE_SIDE) {
+        int block_row = row - _y;
+        for (int i = 0; i < SHAPE_SIDE; ++i)
+            shape[block_row*SHAPE_SIDE + i] = 0;
+    }
+}
+
+void Block::draw() const {
+    for (int i = 0; i < SHAPE_SIDE; ++i)
+        for (int j = 0; j < SHAPE_SIDE; ++j)
+            if (shape[i*SHAPE_SIDE+j])
+                fprintf(stderr, "Coord (%d, %d) occupied\n", _x + j, _y + i);
+}
+
+bool Block::empty() const {
+    for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
+        if (shape[i])
+            return false;
+    return true;
 }

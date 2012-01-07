@@ -42,6 +42,8 @@ int main() {
         return 1;
     }
 
+    block1.draw();
+    block2.draw();
     printf("Tests passed.\n");
     return 0;
 }
