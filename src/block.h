@@ -15,6 +15,15 @@ class Block : public Structure {
         void move_up();
         void move_down();
         void rotate();
+        
+        /**
+         * @brief Check if the point is in the region occupied
+         * by the SHAPE_SIDE * SHAPE_SIDE square
+         * @param X coordinate
+         * @param Y coordinate
+         * @return true or false
+         */
+        bool is_possibly_occupied(int, int) const;
     protected:
         /**
          * @brief Check if a structure collides with this block

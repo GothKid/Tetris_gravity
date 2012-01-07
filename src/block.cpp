@@ -7,9 +7,8 @@ Block::Block() : Structure() {
 }
 
 bool Block::occupied_at(int x, int y) const {
-    //If the coordinates aren't in the sape, return false
-    if (x - _x < 0 || x - _x >= SHAPE_SIDE ||
-            y - _y < 0 || y - _y >= SHAPE_SIDE)
+    //If the coordinates aren't in the shape, return false
+    if (!is_possibly_occupied(x, y))
         return false;
     return shape[(y - _y) * SHAPE_SIDE + (x - _x)];
 }
@@ -57,4 +56,9 @@ void Block::rotate() {
     _rotation = (_rotation + 1) % 4;
     for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = get_rotation_data()[_rotation];
+}
+
+bool Block::is_possibly_occupied(int x, int y) const {
+    return x >= _x && x < _x + SHAPE_SIDE &&
+        y >= _y && y < _y + SHAPE_SIDE;
 }
