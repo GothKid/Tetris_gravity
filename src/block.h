@@ -53,7 +53,7 @@ class Block : public Structure {
         bool shape[SHAPE_SIDE*SHAPE_SIDE];
         int _rotation;
         virtual const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] = 0;
-        bool _is_moving;
+        static Block *_moving;
 };
 
 class Line_block : public Block {

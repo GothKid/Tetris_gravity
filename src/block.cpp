@@ -1,10 +1,13 @@
 #include "block.h"
 
+Block *Block::_moving = 0;
 Block::Block() : Structure() {
-    for (int i; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
+    for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = false;
+    _x = 1;
+    _y = 0;
     _rotation = 0;
-    _is_moving = true;
+    _moving = this;
 }
 
 bool Block::occupied_at(int x, int y) const {
@@ -50,15 +53,17 @@ void Block::move_up() {
 void Block::move_down() {
     ++_y;
     if (check_collides()) {
-        _is_moving = false;
+        if (_moving == this)
+            _moving = 0;
         --_y;
     }
+    _moving = this;
 }
 
 void Block::rotate() {
     _rotation = (_rotation + 1) % 4;
     for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
-        shape[i] = get_rotation_data()[_rotation];
+        shape[i] = get_rotation_data()[_rotation][i];
 }
 
 bool Block::is_possibly_occupied(int x, int y) const {
@@ -67,7 +72,7 @@ bool Block::is_possibly_occupied(int x, int y) const {
 }
 
 bool Block::is_moving() {
-    return _is_moving;
+    return _moving;
 }
 
 void Block::delete_row(int row) {
