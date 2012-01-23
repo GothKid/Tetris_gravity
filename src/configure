@@ -7,8 +7,8 @@ then
     printf "FRAMEWORKS=-framework SDL -framework Cocoa -framework SDL_image -framework SDL_ttf\n" >> Makefile
 elif [ `uname` = "Linux" ]
 then
-    printf "\-lSDL\n" >> Makefile
-    printf "FRAMEWORKS=\n" >> Makefile
+    printf "\-I/usr/include/SDL\n" >> Makefile
+    printf "FRAMEWORKS=-lSDL\n" >> Makefile
 fi
 
 printf "\n" >> Makefile
@@ -21,7 +21,7 @@ elif [ `uname` = "Linux" ]
 then
 printf "tetris: l_block.o block.o box_block.o game.o line_block.o rectangle.o reverse_l_block.o reverse_s_block.o s_block.o structure.o t_block.o tetris.o\n" >> Makefile
 fi
-printf "\t\$(CC) \$(CFLAGS) \$(FRAMEWORKS) -o ../bin/\$@ $^\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -o ../bin/\$@ $^ \$(FRAMEWORKS)\n" >> Makefile
 printf "l_block.o: l_block.cpp\n" >> Makefile
 printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
 printf "block.o: block.cpp\n" >> Makefile
