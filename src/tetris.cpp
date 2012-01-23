@@ -9,6 +9,7 @@ SDL_Surface *screen;
 void draw_sdl(std::list<Coord>, COLOR); 
 
 int main (int argc, char **argv) {
+    bool lose = false;
     int points = 0;
     SDL_Surface *block;
     SDL_Surface *tmp;
@@ -68,6 +69,11 @@ int main (int argc, char **argv) {
         //See if a new block is needed
         if (!Block::is_moving() || !current_block) {
             current_block = new_block();
+            //Check if the game is finished
+            if (current_block->check_collides()) {
+                lose = true;
+                break;
+            }
             blocks.push_back(current_block);
         }
 
@@ -138,6 +144,13 @@ int main (int argc, char **argv) {
         if (current_time - last_frame < FRAME_TIME)
             SDL_Delay(FRAME_TIME - (current_time - last_frame));
         last_frame = current_time;
+    }
+
+    if (lose) {
+        SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 255, 255, 255));
+        //TODO: Print lose message
+        SDL_Flip(screen);
+        SDL_Delay(1000);
     }
 
     SDL_Quit();

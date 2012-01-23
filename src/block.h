@@ -35,6 +35,7 @@ class Block : public Structure {
          */
         bool occupied_at(int x, int y) const;
         bool empty() const;
+        bool check_collides() const;
     protected:
         /**
          * @brief Check if a structure collides with this block
@@ -46,7 +47,6 @@ class Block : public Structure {
          * structures
          * @return true if there is a collision, false otherwise
          */
-        bool check_collides() const;
         /**
          * @brief Stores if a cell is occupied by this block
          */
