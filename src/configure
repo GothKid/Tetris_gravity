@@ -14,7 +14,13 @@ fi
 printf "\n" >> Makefile
 printf "all: ../bin tetris\n" >> Makefile
 printf "\n" >> Makefile
+if [ `uname` = "Darwin" ]
+then
 printf "tetris: l_block.o block.o box_block.o game.o line_block.o rectangle.o reverse_l_block.o reverse_s_block.o s_block.o structure.o t_block.o tetris.o *.m\n" >> Makefile
+elif [ `uname` = "Linux" ]
+then
+printf "tetris: l_block.o block.o box_block.o game.o line_block.o rectangle.o reverse_l_block.o reverse_s_block.o s_block.o structure.o t_block.o tetris.o\n" >> Makefile
+fi
 printf "\t\$(CC) \$(CFLAGS) \$(FRAMEWORKS) -o ../bin/\$@ $^\n" >> Makefile
 printf "l_block.o: l_block.cpp\n" >> Makefile
 printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
