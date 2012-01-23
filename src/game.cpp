@@ -18,7 +18,8 @@ void ini_blocks(std::list<Rectangle*> &rectangles) {
     rectangles.push_back(new Rectangle(1, HEIGHT, 1, WIDTH));
 } 
 
-void clean_rows(std::list<Block*> &blocks) {
+int clean_rows(std::list<Block*> &blocks) {
+    int deleted = 0;
     for (int i = 0; i <= HEIGHT; ++i) {
         int occupied = 0;
         for (int j = 1; j <= WIDTH; ++j) {
@@ -27,10 +28,13 @@ void clean_rows(std::list<Block*> &blocks) {
                     ++occupied;
             }
         }
-        if (occupied == WIDTH)
+        if (occupied == WIDTH) {
             for (block_iter iter = blocks.begin(); iter != blocks.end(); ++iter)
                 (*iter)->delete_row(i);
+            ++deleted;
+        }
     }
+    return deleted;
 }
 
 void delete_empty_blocks(std::list<Block*> &blocks) {

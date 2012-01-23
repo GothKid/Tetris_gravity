@@ -2,11 +2,14 @@
 #include "game.h"
 
 const int BOX_SIDE = 20;
+const int TARGET_FPS = 60;
+const int FRAME_TIME = 1000/TARGET_FPS;
 SDL_Surface *screen;
 
 void draw_sdl(std::list<Coord>, COLOR); 
 
 int main (int argc, char **argv) {
+    int points = 0;
     SDL_Surface *block;
     SDL_Surface *tmp;
     //Init sdl
@@ -56,16 +59,14 @@ int main (int argc, char **argv) {
     int last_fall = SDL_GetTicks();
 
     //Min time between moves
-    int time_move = 100;
+    int time_move = 120;
     int last_move = SDL_GetTicks();
     
+    int last_frame = SDL_GetTicks();
     while (!finish) {
-        while (SDL_PollEvent(&event))
-            if (event.type == SDL_QUIT)
-                finish = true;
+
         //See if a new block is needed
         if (!Block::is_moving() || !current_block) {
-            fprintf(stderr, "Block created\n");
             current_block = new_block();
             blocks.push_back(current_block);
         }
@@ -76,6 +77,24 @@ int main (int argc, char **argv) {
             last_fall = current_time;
             advance_blocks(blocks);
         }
+        //Detect keypress
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                finish = true;
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
+                current_block->move_left();
+                last_move = current_time;
+            }
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT) {
+                current_block->move_right();
+                last_move = current_time;
+            }
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
+                current_block->rotate();
+                last_move = current_time;
+            }
+        }
+        //Repeat keypress
         if (current_block) {
             if (current_time - last_move >= time_move) {
                 last_move = current_time;
@@ -92,7 +111,9 @@ int main (int argc, char **argv) {
         }
 
         //Clean full rows
-        clean_rows(blocks);
+        points += clean_rows(blocks);
+        time_fall = 1000 - points * 5;
+        fprintf(stderr, "points: %d, time_fall: %d\n", points, time_fall);
         delete_empty_blocks(blocks);
         //If the current block has been erased, set it to 0
         bool current_found = false;
@@ -111,6 +132,12 @@ int main (int argc, char **argv) {
         draw_rectangles(rectangles, draw_sdl);
         draw_blocks(blocks, draw_sdl);
         SDL_Flip(screen);
+
+        //Slow framerate
+        current_time = SDL_GetTicks();
+        if (current_time - last_frame < FRAME_TIME)
+            SDL_Delay(FRAME_TIME - (current_time - last_frame));
+        last_frame = current_time;
     }
 
     SDL_Quit();

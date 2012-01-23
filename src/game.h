@@ -6,7 +6,7 @@
 
 void ini_blocks(std::list<Rectangle*> &rectangles);
 
-void clean_rows(std::list<Block*> &blocks);
+int clean_rows(std::list<Block*> &blocks);
 
 void delete_empty_blocks(std::list<Block*> &blocks);
 
