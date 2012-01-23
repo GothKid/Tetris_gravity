@@ -1,0 +1,47 @@
+#!/bin/sh
+printf "CC=g++\\n" > Makefile
+printf "CFLAGS=-Wall " >> Makefile
+if [ `uname` = "Darwin" ]
+then
+    printf "\-I/Library/Frameworks/SDL.framework/Headers\n" >> Makefile
+    printf "FRAMEWORKS=-framework SDL -framework Cocoa -framework SDL_image -framework SDL_ttf\n" >> Makefile
+elif [ `uname` = "Linux" ]
+then
+    printf "-lSDL\n" >> Makefile
+    printf "FRAMEWORKS=\n" >> Makefile
+fi
+
+printf "\n" >> Makefile
+printf "all: ../bin tetris\n" >> Makefile
+printf "\n" >> Makefile
+printf "tetris: L_block.o block.o box_block.o game.o line_block.o rectangle.o reverse_l_block.o reverse_s_block.o s_block.o structure.o t_block.o tetris.o *.m\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) \$(FRAMEWORKS) -o ../bin/\$@ $^\n" >> Makefile
+printf "L_block.o: L_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "block.o: block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "box_block.o: box_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "game.o: game.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "line_block.o: line_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "rectangle.o: rectangle.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "reverse_l_block.o: reverse_l_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "reverse_s_block.o: reverse_s_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "s_block.o: s_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "structure.o: structure.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "t_block.o: t_block.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "tetris.o: tetris.cpp\n" >> Makefile
+printf "\t\$(CC) \$(CFLAGS) -c -o \$@ $^\n" >> Makefile
+printf "\n" >> Makefile
+printf "../bin:\n" >> Makefile
+printf "\tmkdir ../bin\n" >> Makefile
+printf "clean:\n" >> Makefile
+printf "\trm -f *.o ../bin/tetris\n" >> Makefile

@@ -1,5 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
+#include <string.h>
 #include "structure.h"
 const int SHAPE_SIDE = 4;
 
