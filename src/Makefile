@@ -2,11 +2,10 @@ CC=g++
 CFLAGS=-Wall -g -I/Library/Frameworks/SDL.framework/Headers
 FRAMEWORKS=-framework SDL -framework Cocoa -framework SDL_image -framework SDL_ttf
 
-all: tetris
+all: ../bin tetris
 
 tetris: L_block.o block.o box_block.o game.o line_block.o rectangle.o reverse_l_block.o reverse_s_block.o s_block.o structure.o t_block.o tetris.o *.m
 	$(CC) $(CFLAGS) $(FRAMEWORKS) -o ../bin/$@ $^
-
 L_block.o: L_block.cpp
 	$(CC) $(CFLAGS) -c -o $@ $^
 block.o: block.cpp
@@ -32,5 +31,7 @@ t_block.o: t_block.cpp
 tetris.o: tetris.cpp
 	$(CC) $(CFLAGS) -c -o $@ $^
 
+../bin:
+	mkdir ../bin
 clean:
 	rm -f *.o ../bin/tetris
