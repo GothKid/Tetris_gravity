@@ -70,17 +70,19 @@ int main (int argc, char **argv) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT)
                 finish = true;
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
-                current_block->move_left();
-                last_move = current_time;
-            }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT) {
-                current_block->move_right();
-                last_move = current_time;
-            }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
-                current_block->rotate();
-                last_move = current_time;
+            if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    finish = true;
+                } else if (event.key.keysym.sym == SDLK_LEFT) {
+                    current_block->move_left();
+                    last_move = current_time;
+                } else if (event.key.keysym.sym == SDLK_RIGHT) {
+                    current_block->move_right();
+                    last_move = current_time;
+                } else if (event.key.keysym.sym == SDLK_UP) {
+                    current_block->rotate();
+                    last_move = current_time;
+                }
             }
         }
         //Repeat keypress
