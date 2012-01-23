@@ -11,8 +11,6 @@ void draw_sdl(std::list<Coord>, COLOR);
 int main (int argc, char **argv) {
     bool lose = false;
     int points = 0;
-    SDL_Surface *block;
-    SDL_Surface *tmp;
     //Init sdl
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -21,21 +19,6 @@ int main (int argc, char **argv) {
         fprintf(stderr, "Error starting video\n");
         return 1;
     }
-
-    //Load block
-    tmp = SDL_LoadBMP("resources/block.bmp");
-    if (!tmp) {
-        fprintf(stderr, "Error loading image\n");
-        return 1;
-    }
-
-    block = SDL_DisplayFormat(tmp);
-    SDL_FreeSurface(tmp);
-    if (!block) {
-        fprintf(stderr, "Error optimizing image\n");
-        return 1;
-    }
-
 
     //Init tetris
     
@@ -148,9 +131,19 @@ int main (int argc, char **argv) {
 
     if (lose) {
         SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 255, 255, 255));
-        //TODO: Print lose message
+        SDL_Surface *tmp;
+        SDL_Surface *lose;
+        tmp = SDL_LoadBMP("../src/resources/lose.bmp");
+        if (!tmp)
+            return 1;
+        lose = SDL_DisplayFormat(tmp);
+        if (!lose)
+            return 1;
+        SDL_FreeSurface(tmp);
+        SDL_BlitSurface(lose, 0, screen, 0);
         SDL_Flip(screen);
         SDL_Delay(1000);
+        SDL_FreeSurface(lose);
     }
 
     SDL_Quit();
