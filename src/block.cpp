@@ -30,9 +30,12 @@ bool Block::collides(const Structure& other) const {
 
 bool Block::check_collides() const {
     for (std::list<Structure*>::const_iterator i = structures.begin();
-            i != structures.end(); ++i)
+            i != structures.end(); ++i) {
+        if (!(*i))
+            continue;
         if (*i != this && collides(**i))
             return true;
+    }
     return false;
 }
 void Block::move_left() {
@@ -56,14 +59,21 @@ void Block::move_down() {
         if (_moving == this)
             _moving = 0;
         --_y;
+        return;
     }
     _moving = this;
 }
 
 void Block::rotate() {
+    int orig_rotation = _rotation;
     _rotation = (_rotation + 1) % 4;
     for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = get_rotation_data()[_rotation][i];
+    if (check_collides()) {
+        _rotation = orig_rotation;
+        for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
+            shape[i] = get_rotation_data()[_rotation][i];
+    }
 }
 
 bool Block::is_possibly_occupied(int x, int y) const {
@@ -79,16 +89,26 @@ void Block::delete_row(int row) {
     //Check if the block is in the row
     if (row >= _y && row < _y + SHAPE_SIDE) {
         int block_row = row - _y;
+        //Move the upper part of the figure
+        for (;block_row > 0; --block_row)
+            for (int i = 0; i < SHAPE_SIDE; ++i)
+                shape[block_row*SHAPE_SIDE + i] = shape[(block_row-1)*SHAPE_SIDE + i];
         for (int i = 0; i < SHAPE_SIDE; ++i)
-            shape[block_row*SHAPE_SIDE + i] = 0;
+            shape[i] = 0;
     }
 }
 
-void Block::draw() const {
+void Block::draw(Draw_func df) const {
+    std::list<Coord> coords;
     for (int i = 0; i < SHAPE_SIDE; ++i)
         for (int j = 0; j < SHAPE_SIDE; ++j)
-            if (shape[i*SHAPE_SIDE+j])
-                fprintf(stderr, "Coord (%d, %d) occupied\n", _x + j, _y + i);
+            if (shape[i*SHAPE_SIDE+j]) {
+                Coord c;
+                c.x = j + _x;
+                c.y = i + _y;
+                coords.push_back(c);
+            }
+    df(coords, getcolor());
 }
 
 bool Block::empty() const {

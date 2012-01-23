@@ -42,8 +42,8 @@ int main() {
         return 1;
     }
 
-    block1->draw();
-    block2->draw();
+    block1->draw(TERM);
+    block2->draw(TERM);
     delete block1;
     delete block2;
     printf("Tests passed.\n");

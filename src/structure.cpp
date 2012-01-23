@@ -1,7 +1,7 @@
 #include "structure.h"
 
 std::list<Structure*> Structure::structures;
-Structure::Structure() {
+Structure::Structure() : color(GREY) {
     structures.push_back(this);
 }
 

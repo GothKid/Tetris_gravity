@@ -24,9 +24,9 @@ class Block : public Structure {
          * @return true or false
          */
         bool is_possibly_occupied(int, int) const;
-        bool is_moving();
+        static bool is_moving();
         void delete_row(int row);
-        void draw() const;
+        void draw(Draw_func) const;
         /**
          * @brief Check if this block occupies the given coordinates
          * @param X coordinate
@@ -53,6 +53,7 @@ class Block : public Structure {
         bool shape[SHAPE_SIDE*SHAPE_SIDE];
         int _rotation;
         virtual const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] = 0;
+        virtual COLOR getcolor() const = 0;
         static Block *_moving;
 };
 
@@ -62,6 +63,8 @@ class Line_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 class L_block : public Block {
     public:
@@ -69,6 +72,8 @@ class L_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 class Reverse_L_block : public Block {
     public:
@@ -76,6 +81,8 @@ class Reverse_L_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 class Box_block : public Block {
     public:
@@ -83,6 +90,8 @@ class Box_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 class S_block : public Block {
     public:
@@ -90,6 +99,8 @@ class S_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 class Reverse_S_block : public Block {
     public:
@@ -97,6 +108,8 @@ class Reverse_S_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 class T_block : public Block {
     public:
@@ -104,6 +117,8 @@ class T_block : public Block {
     private:
         const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE];
         const static bool _rotation_data[4][SHAPE_SIDE*SHAPE_SIDE];
+    protected:
+        COLOR getcolor() const;
 };
 
 #endif

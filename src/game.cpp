@@ -1,24 +1,24 @@
 #include "game.h"
 #include "block.h"
-#include "rectangle.h"
 #include <cstdlib>
 #include <ctime>
 
 typedef std::list<Block*>::iterator block_iter;
+typedef std::list<Rectangle*>::iterator rectangle_iter;
 const int HEIGHT = 20;
 const int WIDTH = 8;
-void ini_blocks() {
+void ini_blocks(std::list<Rectangle*> &rectangles) {
 #ifdef __APPLE__
     srandom(time(0));
 #else
     srand(time(0));
 #endif
-    new Rectangle(0, 0, HEIGHT, 1);
-    new Rectangle(WIDTH+1, 0, HEIGHT, 1);
-    new Rectangle(1, HEIGHT+1, 1, WIDTH);
+    rectangles.push_back(new Rectangle(0, 0, HEIGHT, 1));
+    rectangles.push_back(new Rectangle(WIDTH+1, 0, HEIGHT, 1));
+    rectangles.push_back(new Rectangle(1, HEIGHT, 1, WIDTH));
 } 
 
-void clean_rows(std::list<Block*> blocks) {
+void clean_rows(std::list<Block*> &blocks) {
     for (int i = 0; i <= HEIGHT; ++i) {
         int occupied = 0;
         for (int j = 1; j <= WIDTH; ++j) {
@@ -33,7 +33,7 @@ void clean_rows(std::list<Block*> blocks) {
     }
 }
 
-void delete_empty_blocks(std::list<Block*> blocks) {
+void delete_empty_blocks(std::list<Block*> &blocks) {
     for (block_iter iter = blocks.begin(); iter != blocks.end(); ++iter) {
         if ((*iter)->empty()) {
             delete *iter;
@@ -42,7 +42,7 @@ void delete_empty_blocks(std::list<Block*> blocks) {
     }
 }
 
-void advance_blocks(std::list<Block*> blocks) {
+void advance_blocks(std::list<Block*> &blocks) {
     for (block_iter iter = blocks.begin(); iter != blocks.end(); ++iter)
         (*iter)->move_down();
 }
@@ -78,4 +78,14 @@ Block *new_block() {
             break;
     }
     return bl;
+}
+
+void draw_blocks(std::list<Block*> &blocks, Draw_func draw_func) {
+    for (block_iter i = blocks.begin(); i != blocks.end(); ++i) {
+        (*i)->draw(draw_func);
+    }
+}
+void draw_rectangles(std::list<Rectangle*> &rectangles, Draw_func draw_func) {
+    for (rectangle_iter i = rectangles.begin(); i != rectangles.end(); ++i)
+        (*i)->draw(draw_func);
 }

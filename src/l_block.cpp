@@ -23,6 +23,9 @@ const bool L_block::_rotation_data[4][SHAPE_SIDE*SHAPE_SIDE] = {
 L_block::L_block() : Block() {
     memcpy(shape, _rotation_data[_rotation], SHAPE_SIDE*SHAPE_SIDE);
 }
+COLOR L_block::getcolor() const {
+    return ORANGE;
+}
 
 const bool (*L_block::get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] {
     return _rotation_data;

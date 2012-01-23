@@ -6,7 +6,7 @@ class Rectangle : Structure {
     public:
         Rectangle(int x, int y, int height, int width);
         bool occupied_at(int x, int y) const;
-        void draw() const;
+        void draw(Draw_func) const;
     private:
         int _height;
         int _width;

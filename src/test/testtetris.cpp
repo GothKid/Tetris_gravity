@@ -1,7 +1,8 @@
 #include "../game.h"
 
 int main() {
-    ini_blocks();
+    std::list<Rectangle*> rectangles;
+    ini_blocks(rectangles);
     std::list<Block*> blocks;
     Block *bl1 = new Line_block;
     blocks.push_back(bl1);
@@ -9,14 +10,14 @@ int main() {
         fprintf(stderr, "Error creando bloque nuevo\n");
         return 1;
     }
-    bl1->draw();
+    bl1->draw(TERM);
     printf("\n");
     bl1->rotate();
-    bl1->draw();
+    bl1->draw(TERM);
     printf("\n");
     for (int i = 0; i < 30; i++)
         advance_blocks(blocks);
-    bl1->draw();
+    bl1->draw(TERM);
     printf("\n");
 
     Block *bl2 = new Line_block;
@@ -25,22 +26,22 @@ int main() {
         return 1;
     }
     blocks.push_back(bl2);
-    bl2->draw();
+    bl2->draw(TERM);
     printf("\n");
     bl2->rotate();
     bl2->move_right();
     bl2->move_right();
     bl2->move_right();
     bl2->move_right();
-    bl2->draw();
+    bl2->draw(TERM);
     printf("\n");
     for (int i = 0; i < 30; i++)
         advance_blocks(blocks);
-    bl2->draw();
+    bl2->draw(TERM);
     printf("\n");
 
     clean_rows(blocks);
-    bl2->draw();
+    bl2->draw(TERM);
 
     delete_empty_blocks(blocks);
 
