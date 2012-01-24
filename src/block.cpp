@@ -33,6 +33,21 @@ bool Block::occupied_at(int x, int y) const {
 
 
 bool Block::collides(const Structure& other) const {
+    //Check if collision is possible
+    if (_x < other.x()) {
+        if (max_x() < other.min_x())
+            return false;
+    } else {
+        if (other.max_x() < min_x())
+            return false;
+    }
+    if (_y < other.y()) {
+        if (max_y() < other.min_y())
+            return false;
+    } else {
+        if (other.max_y() < min_y())
+            return false;
+    }
     //For every cell occupied by the block, check if the other structucture
     //also occupies it
     for (int x = _x; x < _x + SHAPE_SIDE; ++x)
@@ -131,3 +146,8 @@ bool Block::empty() const {
             return false;
     return true;
 }
+
+int Block::min_x() const { return _x; }
+int Block::max_x() const { return _x + SHAPE_SIDE; }
+int Block::min_y() const { return _y; }
+int Block::max_y() const { return _y + SHAPE_SIDE; }

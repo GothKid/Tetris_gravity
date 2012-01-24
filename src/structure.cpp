@@ -28,3 +28,6 @@ Structure::~Structure() {
         }
     }
 }
+
+int Structure::x() const { return _x; }
+int Structure::y() const { return _y; }

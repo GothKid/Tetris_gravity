@@ -21,6 +21,10 @@ class Rectangle : Structure {
         Rectangle(int x, int y, int height, int width);
         bool occupied_at(int x, int y) const;
         void draw(Draw_func) const;
+        int min_x() const;
+        int max_x() const;
+        int min_y() const;
+        int max_y() const;
     private:
         int _height;
         int _width;

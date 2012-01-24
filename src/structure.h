@@ -25,6 +25,12 @@ class Structure {
         virtual bool occupied_at(int x, int y) const = 0;
         virtual void draw(Draw_func) const = 0;
         const COLOR color;
+        int x() const;
+        int y() const;
+        virtual int min_x() const = 0;
+        virtual int max_x() const = 0;
+        virtual int min_y() const = 0;
+        virtual int max_y() const = 0;
     protected:
         static std::list<Structure*> structures;
         int _x;

@@ -36,3 +36,8 @@ void Rectangle::draw(Draw_func df) const {
         }
     df(coords, color);
 }
+
+int Rectangle::min_x() const { return _x; }
+int Rectangle::max_x() const { return _x + _width; }
+int Rectangle::min_y() const { return _y; }
+int Rectangle::max_y() const { return _y + _height; }

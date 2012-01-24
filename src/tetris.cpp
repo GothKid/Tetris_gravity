@@ -118,7 +118,7 @@ int main (int argc, char **argv) {
         //Clean full rows
         points += clean_rows(blocks);
         time_fall = 1000 - points * 5;
-        fprintf(stderr, "points: %d, time_fall: %d\n", points, time_fall);
+        //fprintf(stderr, "points: %d, time_fall: %d\n", points, time_fall);
         delete_empty_blocks(blocks);
         //If the current block has been erased, set it to 0
         bool current_found = false;

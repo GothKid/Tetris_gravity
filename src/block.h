@@ -70,6 +70,10 @@ class Block : public Structure {
         virtual const bool (*get_rotation_data())[SHAPE_SIDE*SHAPE_SIDE] = 0;
         virtual COLOR getcolor() const = 0;
         static Block *_moving;
+        int min_x() const;
+        int max_x() const;
+        int min_y() const;
+        int max_y() const;
 };
 
 class Line_block : public Block {
