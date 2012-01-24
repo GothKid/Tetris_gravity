@@ -12,7 +12,14 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.*/
 
+#include <string>
+#include <sstream>
 #include "SDL/SDL.h"
+//#ifdef __APPLE__
+#include "SDL_ttf/SDL_ttf.h"
+//#else
+//#include "SDL/SDL_ttf.h"
+//#endif
 #include "game.h"
 
 const int BOX_SIDE = 20;
@@ -20,20 +27,22 @@ const int TARGET_FPS = 30;
 const int FRAME_TIME = 1000/TARGET_FPS;
 const int DEFAULT_TIME_FALL = 800;
 const int SPEED_UP_PER_POINT = 10;
+const int TIME_MOVE = 120;
+const SDL_Color TEXT_COLOR = {255, 255, 255};
 SDL_Surface *screen;
 
 void draw_sdl(std::list<Coord>, COLOR); 
 void show_lose();
+int init_sdl(TTF_Font **font, SDL_Surface **msg);
 
 int main (int argc, char **argv) {
+    TTF_Font *font;
+    SDL_Surface *msg;
     bool lose = false;
     int points = 0;
-    //Init sdl
-    SDL_Init(SDL_INIT_EVERYTHING);
 
-    screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    if (!screen) {
-        fprintf(stderr, "Error starting video\n");
+    //Init sdl
+    if (!init_sdl(&font, &screen)) {
         return 1;
     }
 
@@ -45,14 +54,14 @@ int main (int argc, char **argv) {
 
     //List for the blocks
     std::list<Block*> blocks;
-
     Block *current_block = new_block();
-
     blocks.push_back(current_block);
+
 
     SDL_Event event;
 
-    bool finish = false;
+    
+    //Get state of the keyboard
     Uint8 *keystate = SDL_GetKeyState(0);
 
     //Time for a block to fall 1 square
@@ -60,10 +69,11 @@ int main (int argc, char **argv) {
     int last_fall = SDL_GetTicks();
 
     //Min time between moves
-    int time_move = 120;
     int last_move = SDL_GetTicks();
     
+    //Time when the last frame was printed
     int last_frame = SDL_GetTicks();
+    bool finish = false;
     while (!finish) {
 
         //See if a new block is needed
@@ -104,7 +114,7 @@ int main (int argc, char **argv) {
         }
         //Repeat keypress
         if (current_block) {
-            if (current_time - last_move >= time_move) {
+            if (current_time - last_move >= TIME_MOVE) {
                 last_move = current_time;
                 if (keystate[SDLK_LEFT])
                     current_block->move_left();
@@ -121,7 +131,6 @@ int main (int argc, char **argv) {
         //Clean full rows
         points += clean_rows(blocks);
         time_fall = DEFAULT_TIME_FALL - points * SPEED_UP_PER_POINT;
-        //fprintf(stderr, "points: %d, time_fall: %d\n", points, time_fall);
         delete_empty_blocks(blocks);
         //If the current block has been erased, set it to 0
         bool current_found = false;
@@ -139,6 +148,16 @@ int main (int argc, char **argv) {
         //Draw elements
         draw_rectangles(rectangles, draw_sdl);
         draw_blocks(blocks, draw_sdl);
+
+        //Draw points
+        std::stringstream messagestream;
+        messagestream << points;
+        std::string message = messagestream.str();
+        msg = TTF_RenderText_Solid(font, message.c_str(), TEXT_COLOR);
+        SDL_Rect destination;
+        destination.x = 400;
+        destination.y = 10;
+        SDL_BlitSurface(msg, 0, screen, &destination);
         SDL_Flip(screen);
 
         //Slow framerate
@@ -152,8 +171,44 @@ int main (int argc, char **argv) {
         show_lose();
     }
 
+    //Free all
+    SDL_FreeSurface(msg);
+    TTF_CloseFont(font);
+    TTF_Quit();
     SDL_Quit();
     return 0;
+}
+
+int init_sdl(TTF_Font **font, SDL_Surface **screen) {
+    //Init sdl
+    if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+        fprintf(stderr, "Error starting SDL\n");
+        return 0;
+    }
+
+    //Init sdl_ttf
+    if (TTF_Init() == -1) {
+        fprintf(stderr, "Error starting SDL_ttf\n");
+        return 0;
+    }
+
+    *font = TTF_OpenFont("../src/resources/arial.ttf", 28);
+    if (!*font) {
+        TTF_Quit();
+        SDL_Quit();
+        fprintf(stderr, "Error opening font\n");
+        return 0;
+    }
+
+    *screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    if (!*screen) {
+        TTF_CloseFont(*font);
+        TTF_Quit();
+        SDL_Quit();
+        fprintf(stderr, "Error starting video\n");
+        return 0;
+    }
+    return 1;
 }
 
 void show_lose() {
