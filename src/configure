@@ -8,7 +8,7 @@ then
 elif [ `uname` = "Linux" ]
 then
     printf "\-I/usr/include/SDL\n" >> Makefile
-    printf "FRAMEWORKS=-lSDL\n" >> Makefile
+    printf "FRAMEWORKS=-lSDL -lSDL_ttf\n" >> Makefile
 fi
 
 printf "\n" >> Makefile

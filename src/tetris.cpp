@@ -15,11 +15,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.*/
 #include <string>
 #include <sstream>
 #include "SDL/SDL.h"
-//#ifdef __APPLE__
+#ifdef __APPLE__
 #include "SDL_ttf/SDL_ttf.h"
-//#else
-//#include "SDL/SDL_ttf.h"
-//#endif
+#else
+#include "SDL/SDL_ttf.h"
+#endif
 #include "game.h"
 
 const int BOX_SIDE = 20;
