@@ -16,11 +16,14 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.*/
 #include "game.h"
 
 const int BOX_SIDE = 20;
-const int TARGET_FPS = 60;
+const int TARGET_FPS = 30;
 const int FRAME_TIME = 1000/TARGET_FPS;
+const int DEFAULT_TIME_FALL = 800;
+const int SPEED_UP_PER_POINT = 10;
 SDL_Surface *screen;
 
 void draw_sdl(std::list<Coord>, COLOR); 
+void show_lose();
 
 int main (int argc, char **argv) {
     bool lose = false;
@@ -53,7 +56,7 @@ int main (int argc, char **argv) {
     Uint8 *keystate = SDL_GetKeyState(0);
 
     //Time for a block to fall 1 square
-    int time_fall = 1000;
+    int time_fall = DEFAULT_TIME_FALL;
     int last_fall = SDL_GetTicks();
 
     //Min time between moves
@@ -117,7 +120,7 @@ int main (int argc, char **argv) {
 
         //Clean full rows
         points += clean_rows(blocks);
-        time_fall = 1000 - points * 5;
+        time_fall = DEFAULT_TIME_FALL - points * SPEED_UP_PER_POINT;
         //fprintf(stderr, "points: %d, time_fall: %d\n", points, time_fall);
         delete_empty_blocks(blocks);
         //If the current block has been erased, set it to 0
@@ -146,24 +149,28 @@ int main (int argc, char **argv) {
     }
 
     if (lose) {
-        SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 255, 255, 255));
-        SDL_Surface *tmp;
-        SDL_Surface *lose;
-        tmp = SDL_LoadBMP("../src/resources/lose.bmp");
-        if (!tmp)
-            return 1;
-        lose = SDL_DisplayFormat(tmp);
-        if (!lose)
-            return 1;
-        SDL_FreeSurface(tmp);
-        SDL_BlitSurface(lose, 0, screen, 0);
-        SDL_Flip(screen);
-        SDL_Delay(1000);
-        SDL_FreeSurface(lose);
+        show_lose();
     }
 
     SDL_Quit();
     return 0;
+}
+
+void show_lose() {
+    SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 255, 255, 255));
+    SDL_Surface *tmp;
+    SDL_Surface *lose;
+    tmp = SDL_LoadBMP("../src/resources/lose.bmp");
+    if (!tmp)
+        return;
+    lose = SDL_DisplayFormat(tmp);
+    if (!lose)
+        return;
+    SDL_FreeSurface(tmp);
+    SDL_BlitSurface(lose, 0, screen, 0);
+    SDL_Flip(screen);
+    SDL_Delay(1000);
+    SDL_FreeSurface(lose);
 }
 
 void draw_sdl(std::list<Coord> coords, COLOR color) {

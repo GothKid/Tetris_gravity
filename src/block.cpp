@@ -19,7 +19,7 @@ Block::Block() : Structure() {
     for (int i = 0; i < SHAPE_SIDE*SHAPE_SIDE; ++i)
         shape[i] = false;
     _x = 1;
-    _y = 0;
+    _y = -2;
     _rotation = 0;
     _moving = this;
 }
