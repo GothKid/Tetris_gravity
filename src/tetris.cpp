@@ -14,8 +14,16 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.*/
 
 #include <string>
 #include <sstream>
+
+#ifdef WIN32
+#include "SDL.h"
+#else
 #include "SDL/SDL.h"
-#ifdef __APPLE__
+#endif
+
+#ifdef WIN32
+#include "SDL_ttf.h"
+#elif __APPLE__
 #include "SDL_ttf/SDL_ttf.h"
 #else
 #include "SDL/SDL_ttf.h"
@@ -192,7 +200,11 @@ int init_sdl(TTF_Font **font, SDL_Surface **screen) {
         return 0;
     }
 
+#ifdef WIN32
+    *font = TTF_OpenFont("resources/arial.ttf", 28);
+#else
     *font = TTF_OpenFont("../src/resources/arial.ttf", 28);
+#endif
     if (!*font) {
         TTF_Quit();
         SDL_Quit();
@@ -215,7 +227,11 @@ void show_lose() {
     SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 255, 255, 255));
     SDL_Surface *tmp;
     SDL_Surface *lose;
+#ifdef WIN32
+    tmp = SDL_LoadBMP("resources/lose.bmp");
+#else
     tmp = SDL_LoadBMP("../src/resources/lose.bmp");
+#endif
     if (!tmp)
         return;
     lose = SDL_DisplayFormat(tmp);
