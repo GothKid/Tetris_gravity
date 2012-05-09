@@ -56,6 +56,8 @@ void delete_empty_blocks(std::list<Block*> &blocks) {
         if ((*iter)->empty()) {
             delete *iter;
             iter = blocks.erase(iter);
+            if (iter == blocks.end())
+                break;
         }
     }
 }
