@@ -85,7 +85,7 @@ int main (int argc, char **argv) {
     while (!finish) {
 
         //See if a new block is needed
-        if (!Block::is_moving() || !current_block) {
+        if (!Block::moving_block() || !current_block) {
             current_block = new_block();
             //Check if the game is finished
             if (current_block->check_collides()) {

@@ -39,7 +39,8 @@ class Block : public Structure {
          * @return true or false
          */
         bool is_possibly_occupied(int, int) const;
-        static bool is_moving();
+        static Block *moving_block();
+        static void reset_moving_block();
         void delete_row(int row);
         void draw(Draw_func) const;
         /**

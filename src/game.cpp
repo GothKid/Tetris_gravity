@@ -54,6 +54,9 @@ int clean_rows(std::list<Block*> &blocks) {
 void delete_empty_blocks(std::list<Block*> &blocks) {
     for (block_iter iter = blocks.begin(); iter != blocks.end(); ++iter) {
         if ((*iter)->empty()) {
+            /* If the deleted block was the moving block, reset moving */
+            if (Block::moving_block() == *iter)
+                Block::reset_moving_block();
             delete *iter;
             iter = blocks.erase(iter);
             if (iter == blocks.end())

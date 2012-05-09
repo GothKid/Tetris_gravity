@@ -110,8 +110,12 @@ bool Block::is_possibly_occupied(int x, int y) const {
         y >= _y && y < _y + SHAPE_SIDE;
 }
 
-bool Block::is_moving() {
+Block *Block::moving_block() {
     return _moving;
+}
+
+void Block::reset_moving_block() {
+    _moving = 0;
 }
 
 void Block::delete_row(int row) {
